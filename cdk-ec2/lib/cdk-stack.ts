@@ -25,7 +25,7 @@ export class CdkOpenAiChatbot extends Stack {
     // Main variables based on environment variables and fixed values
     const albPort = 80;
     const applicationPort = 8080;
-    const instanceType = "t3.small";
+    const instanceType = "t3.large";
     const bucketName = `taxchatbot-${Stack.of(this).account}`;
 
     // Obtain extra IDs/variables from SSM Parameters
@@ -53,10 +53,15 @@ export class CdkOpenAiChatbot extends Stack {
     });
 
     // Add code to S3 bucket (to download it from EC2 instances)
-    const _s3DeployFiles = new s3_deploy.BucketDeployment(this, "BucketMainDeployFiles", {
+    const _s3DeployFiles1 = new s3_deploy.BucketDeployment(this, "BucketDeployFilesSrc", {
       sources: [s3_deploy.Source.asset("../src")],
       destinationBucket: bucket,
       destinationKeyPrefix: "src",
+    });
+    const _s3DeployFiles2 = new s3_deploy.BucketDeployment(this, "BucketDeployFilesDatasets", {
+      sources: [s3_deploy.Source.asset("../datasets")],
+      destinationBucket: bucket,
+      destinationKeyPrefix: "datasets",
     });
 
     // Role assumed by the EC2 (Instance Profile Role)
@@ -69,6 +74,7 @@ export class CdkOpenAiChatbot extends Stack {
     bucket.grantReadWrite(instanceRole)
     instanceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("EC2InstanceConnect"))
     instanceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonSSMManagedInstanceCore"))
+    instanceRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchAgentServerPolicy"))
 
     // Create Application load balancer (ALB)
     const alb = new elasticloadbalancing.ApplicationLoadBalancer(this, "ALB", {
@@ -100,11 +106,12 @@ export class CdkOpenAiChatbot extends Stack {
       ec2.Port.tcp(applicationPort),
       "ALB to EC2 SG Connections for Application Port"
     );
-    albToEc2SG.addIngressRule(
-      ec2.Peer.anyIpv4(),  // TODO: Update to AWS range only
-      ec2.Port.tcp(22),
-      "Allow SSH to EC2 instances"
-    );
+    // // Note: uncomment these lines if we want SSH EC2 Instance Connect access
+    // albToEc2SG.addIngressRule(
+    //   ec2.Peer.anyIpv4(),  // TODO: Update to AWS range only
+    //   ec2.Port.tcp(22),
+    //   "Allow SSH to EC2 instances"
+    // );
 
     // Configure ALB Listener for the desired port
     const listener = alb.addListener("ALB-Listener", {
