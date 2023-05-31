@@ -8,6 +8,8 @@ temp.*
 # CDK context
 cdk.context.json
 
+# Lambda Layer
+layer-*/python/
 
 ################################################################################
 # PYTHON GITIGNORE
