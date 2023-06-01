@@ -25,8 +25,8 @@ export class CdkOpenAiChatbot extends Stack {
     // Main variables based on environment variables and fixed values
     const albPort = 80;
     const applicationPort = 8080;
-    const instanceType = "t3.large";
-    const bucketName = `taxchatbot-${Stack.of(this).account}`;
+    const instanceType = "t3.xlarge";
+    const bucketName = `${mainResourcesName}-${deploymentEnvironment}-${Stack.of(this).account}`;
 
     // Obtain extra IDs/variables from SSM Parameters
     const openAIKey = ssm.StringParameter.valueFromLookup(this, `/${mainResourcesName}/${deploymentEnvironment}/openai-key`);
@@ -152,6 +152,12 @@ export class CdkOpenAiChatbot extends Stack {
         timeout: Duration.seconds(10),
         interval: Duration.minutes(5),
       },
+    });
+
+    // Generate SSM Parameter for sharing ALB DNS
+    new ssm.StringParameter(this, 'SSM-Parameter-AlbDns', {
+      parameterName: `/${mainResourcesName}/${deploymentEnvironment}/api-endpoint`,
+      stringValue: alb.loadBalancerName,
     });
 
     // CloudFormation outputs for the deployment

@@ -5,7 +5,7 @@ import { CdkOpenAiChatbot } from '../lib/cdk-stack';
 
 
 const DEPLOYMENT_ENVIRONMENT = process.env.DEPLOYMENT_ENVIRONMENT ?? "dev";
-const MAIN_RESOURCES_NAME = "openai-chatbot";
+const MAIN_RESOURCES_NAME = "openai-bot-backend";
 
 
 const app = new cdk.App();

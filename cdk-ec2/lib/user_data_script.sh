@@ -14,11 +14,11 @@ sudo systemctl start amazon-ssm-agent
 
 # Install Instance Connect
 echo "----- Initializing EC2 Instance Connect Agent -----"
-sudo yum install ec2-instance-connect
+sudo yum install -y ec2-instance-connect
 
 # Install Amazon CloudWatch Agent
 echo "----- Initializing CloudWatch Agent -----"
-sudo yum install amazon-cloudwatch-agent
+sudo yum install -y amazon-cloudwatch-agent
 
 # Create the necessary folders and permissions
 mkdir /home/api
@@ -32,6 +32,9 @@ aws s3 cp "s3://${BUCKET_NAME}/src/" /home/api/src/ --recursive
 # Show the downloaded files
 echo "----- Source code files are -----"
 ls -lrt /home/api/src/
+
+# Configure CW agent with downloaded config file
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/home/api/src/cw-agent-config.json
 
 # Install dependencies
 echo "----- Installing Python dependencies -----"
