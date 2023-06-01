@@ -1,5 +1,5 @@
 {
-  "name": "openai-frontend",
+  "name": "openai-bot-frontend",
   "version": "1.0.0",
   "bin": {
     "cdk": "bin/cdk.js"

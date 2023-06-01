@@ -12,6 +12,9 @@
       }
       body {
         background-color: #222629;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
       label {
         color: #86c232;
@@ -27,9 +30,9 @@
         font-family: system-ui;
         font-size: 20px;
         font-weight: bold;
-        margin-left: 30px;
         margin-top: 20px;
         width: 140px;
+        height: 40px;
       }
       input {
         color: #222629;
@@ -43,61 +46,78 @@
         color: #ffffff;
         font-family: system-ui;
         font-size: 20px;
-        margin-left: 20px;
         margin-top: 20px;
         background-color: #444c52;
         padding: 10px;
+        width: 400px;
+        text-align: center;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      .container form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .container form button {
+        margin-top: 10px;
       }
     </style>
+    <!-- Include config.js file for global variables (like API endpoint) -->
+    <script src="./config.js"></script>
     <script>
       // callAPI function that takes the base and exponent numbers as parameters
       var callAPI = (base, exponent) => {
-        // instantiate a headers object
         var myHeaders = new Headers();
-        // add content type header to object
         myHeaders.append("Content-Type", "application/json");
-        console.log(myHeaders);
-        // using built in JSON utility package turn object to string and store in a variable
         var raw = JSON.stringify({ base: base, exponent: exponent });
-        console.log(raw);
-        // create a JSON object with parameters for API call and store in a variable
         var requestOptions = {
           method: "POST",
           headers: myHeaders,
           body: raw,
           redirect: "follow",
         };
-        console.log(requestOptions);
-        alert("Starting processing");
-        // make API call with parameters and use promises to get response
-        fetch(
-          "http://cdk-o-albae-a8gb308q63hu-1712199562.us-east-1.elb.amazonaws.com/chatbot",
-          requestOptions
-        )
+        document.getElementById("result").textContent = "Processing...";
+        fetch(API_ENDPOINT, requestOptions) // API_ENDPOINT comes from the "config.js" file
           .then((response) => response.text())
           .then((result) => {
             console.log(result); // Log the response to the console
-            document.getElementById("result").textContent = result; // Populate response in the HTML element
+            document.getElementById("result").textContent =
+              JSON.parse(result).Response.body; // Add response in the HTML element
           })
-          .catch((error) => console.log("error", error));
+          .catch((error) => {
+            console.error("error", error);
+            document.getElementById("result").textContent = "ERROR: " + error; // Add error in the HTML element
+          });
+      };
+
+      // Clear the content of the result element
+      var clearResult = () => {
+        document.getElementById("result").textContent = "";
       };
     </script>
   </head>
   <body>
-    <h1>TO THE POWER OF MATH (EDITED)!</h1>
-    <form>
-      <label>Base number:</label>
-      <input type="text" id="base" />
-      <label>...to the power of:</label>
-      <input type="text" id="exponent" />
-      <!-- set button onClick method to call function we defined passing input values as parameters -->
-      <button
-        type="button"
-        onclick="callAPI(document.getElementById('base').value,document.getElementById('exponent').value)"
-      >
-        CALCULATE
-      </button>
-    </form>
-    <div id="result"></div>
+    <h1>TESTS (EDITED)!</h1>
+    <div class="container">
+      <form>
+        <label>Base number:</label>
+        <input type="text" id="base" />
+        <label>...to the power of:</label>
+        <input type="text" id="exponent" />
+        <button
+          type="button"
+          onclick="callAPI(document.getElementById('base').value,document.getElementById('exponent').value)"
+        >
+          CALCULATE
+        </button>
+        <button type="button" onclick="clearResult()">CLEAR</button>
+      </form>
+      <div id="result"></div>
+    </div>
   </body>
 </html>

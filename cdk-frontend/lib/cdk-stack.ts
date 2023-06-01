@@ -2,6 +2,7 @@ import { CfnOutput, Stack, StackProps, RemovalPolicy, Duration } from 'aws-cdk-l
 import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as s3_deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
 
 
 // Used to load UserData Script
@@ -18,7 +19,7 @@ export class CdkOpenAiFrontend extends Stack {
     super(scope, id, props);
 
     // Main variables based on environment variables and fixed values
-    const websiteBucketName = `bot-site-${Stack.of(this).account}`;
+    const websiteBucketName = `${mainResourcesName}-${Stack.of(this).account}`;
 
     // Create S3 bucket for Static Website content
     const websiteBucket = new s3.Bucket(this, "BucketWebsite", {

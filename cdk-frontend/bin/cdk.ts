@@ -5,7 +5,7 @@ import { CdkOpenAiFrontend } from '../lib/cdk-stack';
 
 
 const DEPLOYMENT_ENVIRONMENT = process.env.DEPLOYMENT_ENVIRONMENT ?? "dev";
-const MAIN_RESOURCES_NAME = "openai-frontend";
+const MAIN_RESOURCES_NAME = "openai-bot-frontend";
 
 
 const app = new cdk.App();
