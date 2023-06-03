@@ -33,7 +33,7 @@ aws s3 cp "s3://${BUCKET_NAME}/src/" /home/api/src/ --recursive
 echo "----- Source code files are -----"
 ls -lrt /home/api/src/
 
-# Configure CW agent with downloaded config file
+# Configure CW agent with downloaded config file (note: the file was previously created with the CW Agent Wizard)
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/home/api/src/cw-agent-config.json
 
 # Install dependencies

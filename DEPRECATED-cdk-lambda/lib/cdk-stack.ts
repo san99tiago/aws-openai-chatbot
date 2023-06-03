@@ -71,14 +71,14 @@ export class CdkOpenAiBot extends Stack {
     const lambdaLayerOpenAI = new lambda.LayerVersion(this, "Lambda-Layer-OpenAI", {
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
       description: `Lambda Layer for Python dependencies for ${mainResourcesName} solution`,
-      code: lambda.Code.fromAsset("../layer-openai/openai-aws-lambda-layer-3.9.zip"),
+      code: lambda.Code.fromAsset("../DEPRECATED-layer-openai/openai-aws-lambda-layer-3.9.zip"),
     });
 
     // // Extra Dependencies Lambda Layer (for Python dependencies)
     // const lambdaLayerExtras = new lambda.LayerVersion(this, "Lambda-Layer-Extras", {
     //   compatibleRuntimes: [lambda.Runtime.PYTHON_3_9],
     //   description: `Lambda Layer for Python dependencies for ${mainResourcesName} solution`,
-    //   code: lambda.Code.fromAsset("../layer-extras"),
+    //   code: lambda.Code.fromAsset("../DEPRECATED-layer-extras"),
     // });
 
     // Lambda Function for the Backend of the OpenAI Chatbot
