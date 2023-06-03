@@ -17,7 +17,7 @@ The AWS infrastructure for the solution is the following (with decoupled fronted
 
 <img src="assets/openai_chatbot_diagram.png" width=80%> <br>
 
-## Manual Steps (Only Once)
+## Manual Steps for Deployment of Stacks
 
 1. Create Systems Manager Parameter in Parameter Store for the OpenAI Key:
 
