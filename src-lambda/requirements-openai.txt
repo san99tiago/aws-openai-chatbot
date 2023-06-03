@@ -1,0 +1,7 @@
+openai[embeddings]
+# openai
+# matplotlib
+# plotly
+# sklearn
+# tenacity
+# urllib3
