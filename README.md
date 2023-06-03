@@ -13,7 +13,7 @@ This is a PoC project developed for a client/friend, that needed a simple OpenAI
 
 ## Architecture
 
-The AWS infrastructure solution is the following (with decoupled fronted/backend):
+The AWS infrastructure for the solution is the following (with decoupled fronted/backend):
 
 <img src="assets/openai_chatbot_diagram.png" width=80%> <br>
 
