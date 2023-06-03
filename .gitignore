@@ -9,7 +9,7 @@ temp.*
 cdk.context.json
 
 # Lambda Layer
-layer-*/python/
+*-layer-*/python/
 
 ################################################################################
 # PYTHON GITIGNORE
